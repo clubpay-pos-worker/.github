@@ -1,0 +1,36 @@
+name: Run golang tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      worker_go_ref:
+        description: 'worker-go branch, tag or SHA to build'
+        required: true
+        default: 'master'
+
+env:
+  GO_VERSION: ">1.20.1"
+
+jobs:
+  integration:
+    name: "Test"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${GO_VERSION}
+
+      - name: Build
+        run: go build -v ./...
+        with:
+          repository: clubpay-pos-worker/worker-go
+          ref: ${{ github.event.inputs.worker_go_ref }}
+          path: worker-go
+          persist-credentials: false
+          token: ${{ secrets.GLOBAL_REPO_TOKEN || github.token }}
+
+      - name: Test
+        run: go test -v ./...

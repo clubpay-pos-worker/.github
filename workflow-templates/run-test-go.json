@@ -1,0 +1,12 @@
+{
+    "name": "Qlub POS go worker workflow",
+    "description": "common workflows for the go workers",
+    "iconName": "example-icon",
+    "categories": [
+        "Go"
+    ],
+    "filePatterns": [
+        "^go.mod",
+        "^Dockerfile"
+    ]
+}
